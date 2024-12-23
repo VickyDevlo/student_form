@@ -3,39 +3,8 @@ import { TextField, Button, Box } from "@mui/material";
 import { AppContext } from "../context/StudentAppContext";
 
 export const StudentForm = () => {
-  const {
-    formData,
-    initialState,
-    setFormData,
-    students,
-    setStudents,
-    editingId,
-    setEditingId,
-  } = useContext(AppContext);
-
-  const handleChange = (field, value) => {
-    setFormData({ ...formData, [field]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (editingId) {
-      setStudents(
-        students.map((student) =>
-          student.id === editingId ? { ...formData, id: editingId } : student
-        )
-      );
-      setEditingId(null);
-    } else {
-      setStudents([...students, { ...formData, id: Date.now() }]);
-    }
-    resetForm();
-  };
-
-  const resetForm = () => {
-    setFormData(initialState);
-    setEditingId(null);
-  };
+  const { formData, handleSubmit, resetForm, handleChange, editingId } =
+    useContext(AppContext);
 
   return (
     <Box

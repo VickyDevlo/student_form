@@ -15,6 +15,25 @@ const AppContextProvider = ({ children }) => {
   const [students, setStudents] = useState([]);
   const [editingId, setEditingId] = useState(null);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (editingId) {
+      setStudents(
+        students.map((student) =>
+          student.id === editingId ? { ...formData, id: editingId } : student
+        )
+      );
+      setEditingId(null);
+    } else {
+      setStudents([...students, { ...formData, id: Date.now() }]);
+    }
+    resetForm();
+  };
+
+  const handleChange = (field, value) => {
+    setFormData({ ...formData, [field]: value });
+  };
+
   const handleEdit = (student) => {
     setEditingId(student.id);
     setFormData(student);
@@ -23,14 +42,21 @@ const AppContextProvider = ({ children }) => {
   const handleDelete = (id) => {
     setStudents(students.filter((student) => student.id !== id));
   };
+  const resetForm = () => {
+    setFormData(initialState);
+    setEditingId(null);
+  };
   const value = {
     formData,
+    handleSubmit,
     initialState,
     setFormData,
     students,
     setStudents,
     editingId,
+    resetForm,
     setEditingId,
+    handleChange,
     handleDelete,
     handleEdit,
   };
